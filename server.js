@@ -10,7 +10,7 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
-const db = knex({
+/*const db = knex({
   client: process.env.DB_CLIENT,
   connection: {
     host : process.env.DB_HOST,
@@ -18,6 +18,11 @@ const db = knex({
     password : process.env.DB_PASSWORD,
     database : process.env.DB_NAME
   }
+});*/
+
+const db = knex({
+	client: 'pg',
+	connection: process.env.POSTGRES_URI
 });
 
 const app = express();
@@ -25,7 +30,7 @@ const app = express();
 app.use(cors())
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> { res.send(db.users) })
+app.get('/', (req, res)=> { res.send("Ok") })
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
